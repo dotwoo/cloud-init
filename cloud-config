@@ -9,11 +9,13 @@ chpasswd:
       type: text
 
 runcmd:
-  - sed -i -e '/^Port/s/^.*$/Port 4444/' /etc/ssh/sshd_config
-  - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
-  - sed -i -e '$aAllowUsers ubuntu' /etc/ssh/sshd_config
-  - sed -i -e '$aAllowUsers ubuntu' /etc/ssh/sshd_config
-  - restart ssh
+  - sed -i -e '/Port/s/^.*$/Port 22/' /etc/ssh/sshd_config
+  - sed -i -e '/PermitRootLogin/s/^.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
+  # - sed -i -e '$aAllowUsers ubuntu' /etc/ssh/sshd_config
+  # - restart ssh
+  - [systemctl, restart, ssh]
+  - ln -s /home/ubuntu/Home /root/Home
+
 write_files:
   - path: /root/.ssh/authorized_keys
     content: |
