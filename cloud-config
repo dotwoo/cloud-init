@@ -1,54 +1,22 @@
 #cloud-config
-users:
-  - name: root
-    ssh-authorized-keys:
-      - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsMLwetePLIBP/IlYUTiavb7OvM6gOnZP6Kyz9ffpzJwA4eMkEpF/bzRn6m0VOe25txMSVWyh0+EqfeqRuheLnpcseJjt3wr0s48sObsWl75HrAqpgjaxI9sgL7tzF8AAZN6OBJKpnvWWeGSXny7X6Sh2R0uaDIa7tQWxYKIxsmjDQ4hlxq3Q5gfA7kMY8cb5xAUxDGFtDu6VEpzBcUC0gtqlCwrNO18/4bb1rbczntVfqEk6nNZUSYK8kFnbtLNgG+Kc5RS2dLuiKXXIjVkZ5vGecDPXJn/KZCo7gwDTk8qRrLfComZUhLpLDxopWlFrRuQ4uWl5xuGGiwhpNON/v dotwoo@wubinbindeMacBook-Air.local
-  # - name: demo
-  #   ssh-authorized-keys:
-  #     - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsMLwetePLIBP/IlYUTiavb7OvM6gOnZP6Kyz9ffpzJwA4eMkEpF/bzRn6m0VOe25txMSVWyh0+EqfeqRuheLnpcseJjt3wr0s48sObsWl75HrAqpgjaxI9sgL7tzF8AAZN6OBJKpnvWWeGSXny7X6Sh2R0uaDIa7tQWxYKIxsmjDQ4hlxq3Q5gfA7kMY8cb5xAUxDGFtDu6VEpzBcUC0gtqlCwrNO18/4bb1rbczntVfqEk6nNZUSYK8kFnbtLNgG+Kc5RS2dLuiKXXIjVkZ5vGecDPXJn/KZCo7gwDTk8qRrLfComZUhLpLDxopWlFrRuQ4uWl5xuGGiwhpNON/v dotwoo@wubinbindeMacBook-Air.local
-  #   sudo: ["ALL=(ALL) NOPASSWD:ALL"]
-  #   groups: sudo
-  #   shell: /bin/bash
 
-# chpasswd:
-#   list: |
-#     root:xxxxxx
-#   expire: False
+ssh_pwauth: false
+chpasswd:
+  expire: false
+  users:
+    - name: ubuntu
+      password: woshi566
+      type: text
+
 runcmd:
   - sed -i -e '/^Port/s/^.*$/Port 4444/' /etc/ssh/sshd_config
   - sed -i -e '/^PermitRootLogin/s/^.*$/PermitRootLogin yes/' /etc/ssh/sshd_config
-  - sed -i -e '$aAllowUsers demo' /etc/ssh/sshd_config
+  - sed -i -e '$aAllowUsers ubuntu' /etc/ssh/sshd_config
+  - sed -i -e '$aAllowUsers ubuntu' /etc/ssh/sshd_config
   - restart ssh
-# write_files:
-#   - path: /etc/ssh/sshd_config
-#     content: |
-#       Port 4444
-#       Protocol 2
-#       HostKey /etc/ssh/ssh_host_rsa_key
-#       HostKey /etc/ssh/ssh_host_dsa_key
-#       HostKey /etc/ssh/ssh_host_ecdsa_key
-#       HostKey /etc/ssh/ssh_host_ed25519_key
-#       UsePrivilegeSeparation yes
-#       KeyRegenerationInterval 3600
-#       ServerKeyBits 1024
-#       SyslogFacility AUTH
-#       LogLevel INFO
-#       LoginGraceTime 120
-#       PermitRootLogin no
-#       StrictModes yes
-#       RSAAuthentication yes
-#       PubkeyAuthentication yes
-#       IgnoreRhosts yes
-#       RhostsRSAAuthentication no
-#       HostbasedAuthentication no
-#       PermitEmptyPasswords no
-#       ChallengeResponseAuthentication no
-#       X11Forwarding yes
-#       X11DisplayOffset 10
-#       PrintMotd no
-#       PrintLastLog yes
-#       TCPKeepAlive yes
-#       AcceptEnv LANG LC_*
-#       Subsystem sftp /usr/lib/openssh/sftp-server
-#       UsePAM yes
-#       AllowUsers demo
+write_files:
+  - path: /root/.ssh/authorized_keys
+    content: |
+      ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCsMLwetePLIBP/IlYUTiavb7OvM6gOnZP6Kyz9ffpzJwA4eMkEpF/bzRn6m0VOe25txMSVWyh0+EqfeqRuheLnpcseJjt3wr0s48sObsWl75HrAqpgjaxI9sgL7tzF8AAZN6OBJKpnvWWeGSXny7X6Sh2R0uaDIa7tQWxYKIxsmjDQ4hlxq3Q5gfA7kMY8cb5xAUxDGFtDu6VEpzBcUC0gtqlCwrNO18/4bb1rbczntVfqEk6nNZUSYK8kFnbtLNgG+Kc5RS2dLuiKXXIjVkZ5vGecDPXJn/KZCo7gwDTk8qRrLfComZUhLpLDxopWlFrRuQ4uWl5xuGGiwhpNON/v dotwoo@wubinbindeMacBook-Air.local
+    permissions: "0600"
+    defer: true

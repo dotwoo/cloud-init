@@ -1,3 +1,3 @@
-#multipass launch -n foo --cloud-init cloud-config
-multipass mount ~/dev  foo:/home/dotwoo
+multipass launch -n primary --cloud-init cloud-config
+# multipass mount ~/dev primary:/home/dotwoo
 multipass list
